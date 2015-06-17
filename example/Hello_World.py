@@ -6,12 +6,12 @@ __version__ = "2.0"
 __maintainer__ = __author__
 __email__ = "support@olimex.com"
 
-# from oled import OLED
-# from oled import Font
+from oled import OLED
+from oled import Font
 from oled import Graphics
 
 #
-dis = OLED.OLED(0)
+dis = OLED(0)
 dis.begin()
 dis.initialize()
 dis.set_memory_addressing_mode(0)
@@ -22,7 +22,7 @@ dis.set_page_address(0, 7)
 dis.clear()
 
 # Set font scale x2
-f = Font.Font(2)
+f = Font(2)
 
 f.print_string(6, 0, "OLIMEX LTD")
 f.scale = 1
@@ -39,4 +39,5 @@ dis.activate_scroll()
 
 
 Graphics.draw_pixel(0, 0)
+Graphics.draw_line(0, 60, 100, 63)
 dis.update()

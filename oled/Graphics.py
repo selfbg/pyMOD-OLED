@@ -6,8 +6,7 @@ __version__ = "2.0"
 __maintainer__ = __author__
 __email__ = "support@olimex.com"
 
-
-from oled.OLED import OLED
+from .OLED import OLED
 
 
 class Graphics(OLED):

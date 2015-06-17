@@ -6,7 +6,8 @@ __version__ = "2.0"
 __maintainer__ = __author__
 __email__ = "support@olimex.com"
 
-from oled import OLED
+
+from oled.OLED import OLED
 
 
 class Font(OLED):
@@ -119,6 +120,7 @@ class Font(OLED):
         self.scale = scale
 
     def print_char(self, x, y, ch):
+
         """
         Print single char at location
 
@@ -160,12 +162,13 @@ class Font(OLED):
         x = x0
         y = y0
         for i in string:
-            if x > self.width:
+            if x >= OLED.oled_width - (6 * self.scale):
                 x = 0
-                y += 8 * self.scale
+                y += (8 * self.scale)
 
-            self.print_char(x, y, i)
-            x += 6 * self.scale
-
-            if y > self.height:
+            if y >= OLED.oled_height:
                 return
+            self.print_char(x, y, i)
+            x += (6 * self.scale)
+
+

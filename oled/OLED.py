@@ -19,9 +19,9 @@ class MethodError(Exception):
 
 class OLED:
 
-    __oled_height = 64
-    __oled_width = 128
-    video_buffer = [0]*(__oled_height * __oled_width // 8)
+    oled_height = 64
+    oled_width = 128
+    video_buffer = [0]*(oled_height * oled_width // 8)
 
     def __init__(self, i2c, address=0x3c):
         # Communication parameters
@@ -204,11 +204,11 @@ class OLED:
 
     @property
     def height(self):
-        return self.__oled_height
+        return self.oled_height
 
     @property
     def width(self):
-        return self.__oled_width
+        return self.oled_width
 
     @property
     def contrast(self):
@@ -717,7 +717,6 @@ class OLED:
         self.__send_command([0x8d, 0x10 | (on << 2)])
 
 
-    class XXX():
-        pass
+
 
 

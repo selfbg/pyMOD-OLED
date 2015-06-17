@@ -119,6 +119,14 @@ class Font(OLED):
         """
         self.scale = scale
 
+    @property
+    def scale(self):
+        return self.scale
+
+    @scale.setter
+    def scale(self, new_scale):
+        self.scale = new_scale
+
     def print_char(self, x, y, ch):
 
         """

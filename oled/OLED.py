@@ -23,6 +23,10 @@ class OLED:
     oled_width = 128
     video_buffer = [0]*(oled_height * oled_width // 8)
 
+    # Define some global values
+    RIGHT_SCROLL = 0
+    LEFT_SCROLL = 1
+
     def __init__(self, i2c, address=0x3c):
         # Communication parameters
         self.bus = None

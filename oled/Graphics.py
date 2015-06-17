@@ -1,5 +1,3 @@
-from oled import OLED
-
 __author__ = "Stefan Mavrodiev"
 __copyright__ = "Copyright 2015, Olimex LTD"
 __credits__ = ["Stefan Mavrodiev"]
@@ -9,7 +7,13 @@ __maintainer__ = __author__
 __email__ = "support@olimex.com"
 
 
+from oled.OLED import OLED
+
+
 class Graphics(OLED):
+
+    def __init__(self):
+        pass
 
     @classmethod
     def draw_pixel(cls, x, y):

@@ -17,7 +17,7 @@ Requirements
 ------------
 This package needs the following modules:
 
-- pyserial
+- smbus-cffi
 
 Installation
 ------------
@@ -34,9 +34,9 @@ From PyPi:
 
 .. code-block:: bash
 
-    wget https://pypi.python.org/packages/source/m/mod-oled-128x64/mod-oled-128x64-0.0.2.tar.gz
-    tar -zxf mod-oled-128x64-0.0.2.tar.gz
-    cd mod-oled-128x64-0.0.2
+    wget https://pypi.python.org/packages/source/m/mod-oled-128x64/mod-oled-128x64-0.0.3.tar.gz
+    tar -zxf mod-oled-128x64-0.0.3.tar.gz
+    cd mod-oled-128x64-0.0.3
     python setup.py install
 
 Using pip:

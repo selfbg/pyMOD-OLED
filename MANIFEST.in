@@ -1,0 +1,5 @@
+include example/Hello_World.py
+
+include documentation/*.rst
+include documentation/conf.py
+include documentation/Makefile

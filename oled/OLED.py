@@ -526,7 +526,7 @@ class OLED:
         sets the page address pointer to page start address. This pointer is used to define the current read/write page
         address in graphic display data RAM. If vertical address increment mode is enabled by command 20h, after
         finishing read/write one page data, it is incremented automatically to the next page address.  Whenever the page
-         address pointer finishes accessing the end page address, it is reset back to start page address.
+        address pointer finishes accessing the end page address, it is reset back to start page address.
 
         :param page_start_address:  Page start Address, range : 0-7d, (RESET = 0d)
         :param page_end_address:    Page end Address, range : 0-7d, (RESET = 7d)
@@ -654,10 +654,12 @@ class OLED:
         This command consists of two functions:
 
             • Display Clock Divide Ratio (D)(A[3:0])
+
             Set the divide ratio to generate DCLK (Display Clock) from CLK.  The divide ratio is from 1 to 16, with
             reset value = 1.  Please refer to section 8.3 for the details relationship of DCLK and CLK.
 
             • Oscillator Frequency (A[7:4])
+
             Program the oscillator frequency Fosc that is the source of CLK if CLS pin is pulled high.  The 4-bit value
             results in 16 different frequency settings available as shown below.  The default setting is 1000b.
 

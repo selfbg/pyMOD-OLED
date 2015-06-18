@@ -2,18 +2,24 @@ from setuptools import setup
 
 from codecs import open
 from os import path
+import re
 
 here = path.abspath(path.dirname(__file__))
 
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
-    long_description = f.read()
+
+def read(name):
+    with open(path.join(here, name), encoding='utf-8') as f:
+        return f.read()
+
+with open(path.join(here, 'oled/__init__.py'), 'r', encoding='utf-8') as f:
+    __version__ = (re.search(r'__version__\s*=\s*u?"([^"]+)', f.read()).group(1).strip())
 
 setup(
     name='mod-oled-128x64',
-    version='1.0.0b1',
+    version=__version__,
     description='Control module for MOD-OLED-128x64',
-    long_description=long_description,
-    url='',
+    long_description=read('README.rst') + '\n' + read('CHANGES.rst'),
+    url='https://github.com/SelfDestroyer/pyMOD-OLED',
     author='Stefan Mavrodiev',
     author_email='support@olimex.com',
     license='GPL2',
@@ -34,10 +40,10 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
 
-    keywords='oled',
+    keywords='oled OLinuXino',
 
-    install_requires=['pyserial'],
+    install_requires=['smbus-cffi'],
     packages = ['oled'],
-    platforms='arm'
+    platforms='ARM'
 
 )

@@ -1,4 +1,7 @@
-# __all__ = ['OLED', 'Font', 'Graphics']
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+__version__ = "0.0.2"
 
 from .Graphics import Graphics
 from .OLED import OLED

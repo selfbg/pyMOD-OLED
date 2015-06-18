@@ -164,7 +164,7 @@ class Font(OLED):
         :param x0:  Start X position
         :param y0:  Start Y position
         :param string:  String to display
-        :return:
+        :return: None
         """
         x = x0
         y = y0

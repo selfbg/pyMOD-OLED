@@ -12,15 +12,38 @@ from .OLED import OLED
 class Graphics(OLED):
 
     def __init__(self):
+        """
+        Default constructor
+
+        """
         pass
 
     @classmethod
-    def draw_pixel(cls, x, y):
+    def draw_pixel(cls, x, y, on=True):
+        """
+        Draw single pixel to video buffer
+
+        :param x: X location
+        :param y: Y location
+        :param on:  True - Set pixel, False - clear pixel
+        """
         if x in range(128) and y in range(64):
-            OLED.video_buffer[(y//8)*128 + x] |= (1 << (y % 8))
+            if on:
+                OLED.video_buffer[(y//8)*128 + x] |= (1 << (y % 8))
+            else:
+                OLED.video_buffer[(y//8)*128 + x] &= ~(1 << (y % 8))
 
     @classmethod
     def draw_line(cls, x0, y0, x1, y1):
+        """
+        Draw single line
+
+        :param x0: Start x location
+        :param y0: Start y location
+        :param x1: End x location
+        :param y1: End y location
+        """
+
         # Using Bresenham's line algorithm
         dx = x1 - x0
         dy = y1 - y0
@@ -39,6 +62,13 @@ class Graphics(OLED):
 
     @classmethod
     def draw_circle(cls, x0, y0, r):
+        """
+        Draw singled circle
+
+        :param x0: Center x location
+        :param y0: Center y location
+        :param r: Radius
+        """
         x = r
         y = 0
         decision_over_2 = 1 - x

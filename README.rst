@@ -34,9 +34,9 @@ From PyPi:
 
 .. code-block:: bash
 
-    wget https://pypi.python.org/packages/source/m/mod-oled-128x64/mod-oled-128x64-0.0.3.tar.gz
-    tar -zxf mod-oled-128x64-0.0.3.tar.gz
-    cd mod-oled-128x64-0.0.3
+    wget https://pypi.python.org/packages/source/m/mod-oled-128x64/mod-oled-128x64-0.0.4.tar.gz
+    tar -zxf mod-oled-128x64-0.0.4.tar.gz
+    cd mod-oled-128x64-0.0.4
     python setup.py install
 
 Using pip:

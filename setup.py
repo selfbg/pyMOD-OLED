@@ -11,6 +11,7 @@ def read(name):
     with open(path.join(here, name), encoding='utf-8') as f:
         return f.read()
 
+
 with open(path.join(here, 'oled/__init__.py'), 'r', encoding='utf-8') as f:
     __version__ = (re.search(r'__version__\s*=\s*u?"([^"]+)', f.read()).group(1).strip())
 
@@ -19,7 +20,7 @@ setup(
     version=__version__,
     description='Control module for MOD-OLED-128x64',
     long_description=read('README.rst') + '\n' + read('CHANGES.rst'),
-    url='https://github.com/SelfDestroyer/pyMOD-OLED',
+    url='https://github.com/StefanMavrodiev/pyMOD-OLED',
     author='Stefan Mavrodiev',
     author_email='support@olimex.com',
     license='GPL2',
@@ -41,9 +42,7 @@ setup(
     ],
 
     keywords='oled OLinuXino',
-
     install_requires=['smbus-cffi'],
     packages = ['oled'],
     platforms='ARM'
-
 )

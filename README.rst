@@ -8,7 +8,7 @@ Python library for interfacing MOD-OLED-128x64 with OLinuXino boards.
 SSD1306 controller support SPI, I2C and parallel interface, but with
 this module only I2C is usable.
 
-By default i2c-1 and i2c-2 buses use 100kHz clock. This means that you can 
+By default i2c-1 and i2c-2 buses use 100kHz clock. This means that you can
 achieve around 8 frames per second. You can use i2c-0 which in most OLinuXino boards
 is running at 400kHz (around 25 fps, because this bus is used also for the PMU module).
 You can speed things up by using smaller than 128x64 display area.
@@ -26,17 +26,8 @@ From GitHub:
 
 .. code-block:: bash
 
-    git clone https://github.com/SelfDestroyer/pyMOD-OLED.git
+    git clone https://github.com/StefanMavrodiev/pyMOD-OLED.git
     cd pyMOD-OLED
-    python setup.py install
-
-From PyPi:
-
-.. code-block:: bash
-
-    wget https://pypi.python.org/packages/source/m/mod-oled-128x64/mod-oled-128x64-0.0.4.tar.gz
-    tar -zxf mod-oled-128x64-0.0.4.tar.gz
-    cd mod-oled-128x64-0.0.4
     python setup.py install
 
 Using pip:

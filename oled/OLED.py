@@ -18,10 +18,9 @@ class MethodError(Exception):
 
 
 class OLED:
-
     oled_height = 64
     oled_width = 128
-    video_buffer = [0]*(oled_height * oled_width // 8)
+    video_buffer = [0] * (oled_height * oled_width // 8)
 
     # Define some global values
     RIGHT_SCROLL = 0
@@ -29,42 +28,42 @@ class OLED:
 
     def __init__(self, i2c, address=0x3c):
         # Communication parameters
-        self.bus = None
-        self.__i2c_device = i2c
-        self.__i2c_address = address
+        self._bus = None
+        self._i2c_device = i2c
+        self._i2c_address = address
 
         # Communication constants
-        self.__next_is_command = 0x80
-        self.__next_is_data = 0x40
+        self._next_is_command = 0x80
+        self._next_is_data = 0x40
 
         # Oled default parameters
-        self.__oled_contrast = 0x7f
-        self.__oled_entire_display_on = False
-        self.__oled_inverse_display = False
+        self._oled_contrast = 0x7f
+        self._oled_entire_display_on = False
+        self._oled_inverse_display = False
 
-        self.__oled_vertical_offset = None
+        self._oled_vertical_offset = None
 
-        self.__oled_lower_column_start = 0
-        self.__oled_higher_column_start = 0
-        self.__oled_mode = 0x2
-        self.__oled_column_start_address = 0
-        self.__oled_column_end_address = 127
-        self.__oled_page_start_address = 0
-        self.__oled_page_end_address = 0
+        self._oled_lower_column_start = 0
+        self._oled_higher_column_start = 0
+        self._oled_mode = 0x2
+        self._oled_column_start_address = 0
+        self._oled_column_end_address = 127
+        self._oled_page_start_address = 0
+        self._oled_page_end_address = 0
 
-        self.__oled_start_line = 0
-        self.__oled_segment_remap = False
-        self.__oled_mux_ratio = 64
-        self.__oled_remapped = False
-        self.__oled_display_offset = 0
-        self.__oled_pin_configuration = True
-        self.__oled_com_remap = False
+        self._oled_start_line = 0
+        self._oled_segment_remap = False
+        self._oled_mux_ratio = 64
+        self._oled_remapped = False
+        self._oled_display_offset = 0
+        self._oled_pin_configuration = True
+        self._oled_com_remap = False
 
-        self.__oled_clock_divide = 0
-        self.__oled_osc_freq = 0x08
-        self.__oled_phase1 = 0x02
-        self.__oled_phase2 = 0x02
-        self.__oled_deselect_level = 0x01
+        self._oled_clock_divide = 0
+        self._oled_osc_freq = 0x08
+        self._oled_phase1 = 0x02
+        self._oled_phase2 = 0x02
+        self._oled_deselect_level = 0x01
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
@@ -74,15 +73,15 @@ class OLED:
         Create communication object
 
         """
-        self.bus = smbus.SMBus(self.i2c)
+        self._bus = smbus.SMBus(self._i2c_device)
 
     def close(self):
         """
         Close I2C bus and delete communication object
 
         """
-        self.bus.close()
-        del self.bus
+        self._bus.close()
+        del self._bus
 
     def initialize(self):
         """
@@ -137,26 +136,26 @@ class OLED:
         for i in range(data_len):
             temp = data[16*i:16*(i+1)]
             if temp:
-                self.__send_data(temp)
+                self._send_data(temp)
 
-    def __send_data(self, data):
+    def _send_data(self, data):
         """
         Send one packet via i2c bus
 
         :param data: Data to be send
         """
-        self.bus.write_i2c_block_data(self.__i2c_address, self.__next_is_data, data)
+        self._bus.write_i2c_block_data(self._i2c_address, self._next_is_data, data)
 
-    def __send_command(self, command):
+    def _send_command(self, command):
         """
         Send command to SSD1306 controller
         :param command:
         """
         data = []
         for i in command:
-            data.append(self.__next_is_command)
+            data.append(self._next_is_command)
             data.append(i)
-        self.bus.write_i2c_block_data(self.__i2c_address, data[0], data[1:])
+        self._bus.write_i2c_block_data(self._i2c_address, data[0], data[1:])
 
     def clear(self, update=True):
         """
@@ -190,21 +189,21 @@ class OLED:
 
     @property
     def i2c(self):
-        return self.__i2c_device
+        return self._i2c_device
 
     @i2c.setter
     def i2c(self, i2c):
-        self.__i2c_device = i2c
+        self._i2c_device = i2c
 
     @property
     def address(self):
-        return self.__i2c_address
+        return self._i2c_address
 
     @address.setter
     def address(self, address):
         # Check if address is valid
         self.check_int(address, 0x3c, 0x3d)
-        self.__i2c_address = address
+        self._i2c_address = address
 
     @property
     def height(self):
@@ -216,16 +215,16 @@ class OLED:
 
     @property
     def contrast(self):
-        return self.__oled_contrast
+        return self._oled_contrast
 
     @contrast.setter
     def contrast(self, contrast):
         self.check_int(contrast, 0, 0xff)
-        self.__oled_contrast = contrast
+        self._oled_contrast = contrast
 
     @property
     def mode(self):
-        return self.__oled_mode
+        return self._oled_mode
 
     # 1. Fundamental Command Table
     def set_contrast_control(self, contrast):
@@ -239,7 +238,7 @@ class OLED:
                             increases. (RESET = 7Fh )
         """
         self.contrast = contrast
-        self.__send_command([0x81, self.contrast])
+        self._send_command([0x81, self.contrast])
 
     def entire_display_on(self, status):
         """
@@ -254,7 +253,7 @@ class OLED:
                         False - Resume to RAM content display (RESET). Output follows RAM content
         """
         self.check_int(status, 0, 1)
-        self.__send_command([0xa4 | status])
+        self._send_command([0xa4 | status])
 
     def set_inverse_display(self, inverse):
         """
@@ -267,7 +266,7 @@ class OLED:
                         False - ormal display (RESET)
         """
         self.check_int(inverse, 0, 1)
-        self.__send_command([0xa6 | inverse])
+        self._send_command([0xa6 | inverse])
 
     def set_display_on_off(self, on):
         """
@@ -281,7 +280,7 @@ class OLED:
                     False - Display OFF
         """
         self.check_int(on, 0, 1)
-        self.__send_command([0xae | on])
+        self._send_command([0xae | on])
 
     # 2. Scrolling Command Table
     def deactivate_scroll(self):
@@ -291,7 +290,7 @@ class OLED:
         This command stops the motion of scrolling. After sending 2Eh command to deactivate the scrolling action,the ram
         data needs to be rewritten.
         """
-        self.__send_command([0x2e])
+        self._send_command([0x2e])
         self.update()
 
     def activate_scroll(self):
@@ -306,7 +305,7 @@ class OLED:
             1.  RAM access (Data write or read)
             2.  Changing the horizontal scroll setup parameters
         """
-        self.__send_command([0x2f])
+        self._send_command([0x2f])
 
     def horizontal_scroll_setup(self, direction, start_page, end_page, speed):
         """
@@ -343,7 +342,7 @@ class OLED:
         if start_page > end_page:
             raise ValueError("Start page address cannot be bigger than end page address")
 
-        self.__send_command([0x26 | direction, 0, start_page, speed, end_page, 0x00, 0xFF])
+        self._send_command([0x26 | direction, 0, start_page, speed, end_page, 0x00, 0xFF])
 
     def vertical_and_horizontal_scroll_setup(self, direction, start_page, end_page, speed, vertical_offset):
         """
@@ -386,13 +385,13 @@ class OLED:
         self.check_int(speed, 0, 7)
         self.check_int(vertical_offset, 0, 63)
 
-        self.__oled_vertical_offset = vertical_offset
+        self._oled_vertical_offset = vertical_offset
 
         # Check if start_page is bigger than end_page
         if start_page > end_page:
             raise ValueError("Start page address cannot be bigger than end page address")
 
-        self.__send_command([0x28 | (direction + 1), 0, start_page, speed, end_page, vertical_offset])
+        self._send_command([0x28 | (direction + 1), 0, start_page, speed, end_page, vertical_offset])
 
     def set_vertical_scroll_area(self, start, count):
 
@@ -414,22 +413,22 @@ class OLED:
         self.check_int(start, 0, 63)
         self.check_int(count, 0, 63)
 
-        if start + count > self.__oled_mux_ratio:
+        if start + count > self._oled_mux_ratio:
             raise ValueError("Start + Count cannot be larger than MUX ratio")
 
-        if count > self.__oled_mux_ratio:
+        if count > self._oled_mux_ratio:
             raise ValueError("Count cannot be larger than MUX ratio")
 
-        if not self.__oled_vertical_offset:
+        if not self._oled_vertical_offset:
             raise ValueError("Vertical and horizontal scroll must be setup first")
 
-        if not (self.__oled_vertical_offset < count):
+        if not (self._oled_vertical_offset < count):
             raise ValueError("Count cannot be smaller than vertical offset")
 
-        if not (self.__oled_start_line < count):
+        if not (self._oled_start_line < count):
             raise ValueError("Display start line must be smaller than Count")
 
-        self.__send_command([0xa3, start, count])
+        self._send_command([0xa3, start, count])
 
     # 3. Addressing Setting Command Table
     def set_lower_column(self, column):
@@ -446,7 +445,7 @@ class OLED:
         if self.mode != 0x02:
             raise MethodError("\"%s\" method is only for page addressing mode" % sys._getframe().f_code.co_name)
         self.check_int(column, 0, 0xf)
-        self.__send_command([0x00 | column])
+        self._send_command([0x00 | column])
 
     def set_higher_column(self, column):
         """
@@ -462,7 +461,7 @@ class OLED:
         if self.mode != 0x02:
             raise MethodError("\"%s\" method is only for page addressing mode" % sys._getframe().f_code.co_name)
         self.check_int(column, 0, 0xf)
-        self.__send_command([0x10 | column])
+        self._send_command([0x10 | column])
 
     def set_memory_addressing_mode(self, mode):
         """
@@ -494,8 +493,8 @@ class OLED:
                         to column start address and page start address
         """
         self.check_int(mode, 0, 2)
-        self.__oled_mode = mode
-        self.__send_command([0x20, 0x00 | mode])
+        self._oled_mode = mode
+        self._send_command([0x20, 0x00 | mode])
 
     def set_column_address(self, column_start_address, column_end_address):
         """
@@ -516,7 +515,7 @@ class OLED:
             raise MethodError("\"%s\" method cannot be used with page addressing mode" % sys._getframe().f_code.co_name)
         self.check_int(column_start_address, 0, 127)
         self.check_int(column_end_address, 0, 127)
-        self.__send_command([0x21, column_start_address, column_end_address])
+        self._send_command([0x21, column_start_address, column_end_address])
 
     def set_page_address(self, page_start_address, page_end_address):
         """
@@ -536,7 +535,7 @@ class OLED:
             raise MethodError("\"%s\" method cannot be used with page addressing mode" % sys._getframe().f_code.co_name)
         self.check_int(page_start_address, 0, 7)
         self.check_int(page_end_address, 0, 7)
-        self.__send_command([0x22, page_start_address, page_end_address])
+        self._send_command([0x22, page_start_address, page_end_address])
 
     def set_page_start_address(self, page):
         """
@@ -550,7 +549,7 @@ class OLED:
         if self.mode != 0x02:
             raise MethodError("\"%s\" method is only for page addressing mode" % sys._getframe().f_code.co_name)
         self.check_int(page, 0, 7)
-        self.__send_command([0xb0 | page])
+        self._send_command([0xb0 | page])
 
     # 4. Hardware Configuration (Panel resolution & layout related) Command Table
     def set_display_start_line(self, start_line):
@@ -565,8 +564,8 @@ class OLED:
                             Display start line register is reset to 000000b during RESET.
         """
         self.check_int(start_line, 0, 0x3f)
-        self.__oled_start_line = start_line
-        self.__send_command([0x40 | start_line])
+        self._oled_start_line = start_line
+        self._send_command([0x40 | start_line])
 
     def set_segment_remap(self, remap):
         """
@@ -580,7 +579,7 @@ class OLED:
         :param remap:   True - column address 127 is mapped to SEG0
                         False - column address 0 is mapped to SEG0 (RESET)
         """
-        self.__send_command([0xa0 | remap])
+        self._send_command([0xa0 | remap])
 
     def set_multiplex_ratio(self, ratio):
         """
@@ -595,8 +594,8 @@ class OLED:
                         A[5:0] from 0 to 14 are invalid entry.
         """
         self.check_int(ratio, 15, 63)
-        self.__oled_mux_ratio = ratio
-        self.__send_command([0xa8, ratio])
+        self._oled_mux_ratio = ratio
+        self._send_command([0xa8, ratio])
 
     def set_scan_direction(self, remapped):
         """
@@ -611,7 +610,7 @@ class OLED:
                             Where N is the Multiplex ratio.
         """
         self.check_int(remapped, 0, 1)
-        self.__send_command([0xc0 | (remapped << 3)])
+        self._send_command([0xc0 | (remapped << 3)])
 
     def set_display_offset(self, offset):
         """
@@ -627,7 +626,7 @@ class OLED:
                         The value is reset to 00h after RESET.
         """
         self.check_int(offset, 0, 63)
-        self.__send_command([0xd3, offset])
+        self._send_command([0xd3, offset])
 
     def set_com_pins_configuration(self, configuration, remap):
         """
@@ -643,7 +642,7 @@ class OLED:
         """
         self.check_int(configuration, 0, 1)
         self.check_int(remap, 0, 1)
-        self.__send_command([0xda, 0x02 | (configuration << 4) | (remap << 5)])
+        self._send_command([0xda, 0x02 | (configuration << 4) | (remap << 5)])
 
     # 5. Timing & Driving Scheme Setting Command Table
     def set_display_clock(self, divider, osc_freq):
@@ -671,7 +670,7 @@ class OLED:
         """
         self.check_int(divider, 0, 0xf)
         self.check_int(osc_freq, 0, 0xf)
-        self.__send_command([0xd5, (osc_freq << 4 | divider)])
+        self._send_command([0xd5, (osc_freq << 4 | divider)])
 
     def set_precharge_period(self, phase1, phase2):
         """
@@ -685,7 +684,7 @@ class OLED:
         """
         self.check_int(phase1, 1, 0xf)
         self.check_int(phase2, 1, 0xf)
-        self.__send_command([0xd9, (phase2 << 4 | phase1)])
+        self._send_command([0xd9, (phase2 << 4 | phase1)])
 
     def set_deselect_level(self, level):
         """
@@ -701,7 +700,7 @@ class OLED:
         self.check_int(level, 0, 2)
         if level:
             level += 1
-        self.__send_command([0xdb, level << 4])
+        self._send_command([0xdb, level << 4])
 
     def send_nop(self):
         """
@@ -709,7 +708,7 @@ class OLED:
 
         No operation command
         """
-        self.__send_command([0xe3])
+        self._send_command([0xe3])
 
     # 6. Charge Pump Command Table
     def charge_pump_setting(self, on):
@@ -720,7 +719,7 @@ class OLED:
                     False - Disable charge pump(RESET)
         """
         self.check_int(on, 0, 1)
-        self.__send_command([0x8d, 0x10 | (on << 2)])
+        self._send_command([0x8d, 0x10 | (on << 2)])
 
 
 
